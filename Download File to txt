@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Document</title>
+  <script src="https://thunkable.github.io/webviewer-extension/thunkableWebviewerExtension.js" type="text/javascript"></script>
+</head>
+<body>
+ 
+  
+  <script>
+
+
+        //Use this if you want to pass in 'content-data', 'file-type', 'file-name' as part of the URL string (yourdomain.com?PDFStream=CODESTRINGHERE)
+          const queryString = window.location.search;
+          const urlParams = new URLSearchParams(queryString);
+          const my_contents = ((urlParams.get('content-data') != null) ? urlParams.get('content-data') : 'this is a sample content');
+          const my_filetype = ((urlParams.get('file-type') != null) ? urlParams.get('file-type') : 'text/plain');
+          const my_filename = ((urlParams.get('file-name') != null) ? urlParams.get('file-name') : 'zzfile.txt');
+         
+         
+         
+    function generateFileFromString(text, fileType, fileName) {
+    var blob = new Blob([text], { type: fileType });
+  
+    var dl_link = document.createElement('a');
+    dl_link.download = fileName;
+    dl_link.href = URL.createObjectURL(blob);
+    dl_link.dataset.downloadurl = [fileType, dl_link.download, dl_link.href].join(':');
+    dl_link.style.display = "none";
+    document.body.appendChild(dl_link);
+    dl_link.click();
+    document.body.removeChild(dl_link);
+    setTimeout(function() { URL.revokeObjectURL(dl_link.href); }, 1500);
+  }
+  
+
+  // console.log(my_contents);
+  // console.log(my_filetype);
+  // console.log(my_filename);
+  generateFileFromString(my_contents, my_filetype, my_filename);
+  
+  </script>
+</body>
+</html>
